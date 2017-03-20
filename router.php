@@ -10,6 +10,11 @@ $routes = array(
     '/register/user' => 'RegisterController/user',
     '/register/company' => 'RegisterController/company',
     '/auth' => 'AuthController/index',
+//    '/guests' => 'GuestController/all',
+//    '/guest/1' => 'GuestController/getById/1',
+    '/forum' => 'ForumController/index',
+    '/forum/guest' => 'ForumController/guest',
+    '/forum/user' => 'ForumController/user',
 );
 
 $route = searchRoute($routes, $url);
