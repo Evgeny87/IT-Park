@@ -1,6 +1,7 @@
 <?php
 
 $url = $_SERVER['REQUEST_URI']; //получаем относительную ссылку
+$id = 0;
 
 //массив с путями и их контроллерами, методами и параметрами
 $routes = array(
@@ -18,7 +19,7 @@ $routes = array(
 );
 
 $route = searchRoute($routes, $url);
-$data = parseRoute($route);
+$data = parseRoute($route, $routes, $url, $id);
 
 call($data['class'], $data['method'], $data['params']);
 
@@ -36,7 +37,8 @@ function searchRoute($routes, $url)
         if (preg_match($rout, $url, $a)) {
             $result = $value;                               // Получаю класс
             if (isset($a[1])) {
-                $id=$a[1];                                  // Получаю ID
+                global $id;
+				$id=$a[1];                                  // Получаю ID
             }
         }
     }
@@ -52,7 +54,7 @@ return $result;                                             // Возвраща�
  * @param $route
  * @return array
  */
-function parseRoute($route)
+function parseRoute($route, $routes, $url, $id)
 {
     $routeParts = explode('/', $route);
     $data = array(
@@ -60,6 +62,9 @@ function parseRoute($route)
         'method' => array_shift($routeParts),
         'params' => $routeParts
     );
+	if ($data['params'][0] = 'id') {
+		$data['params'][0] = $id;
+	}
     return $data;
 }
 
