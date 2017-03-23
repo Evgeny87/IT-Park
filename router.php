@@ -1,5 +1,7 @@
 <?php
+
 $url = $_SERVER['REQUEST_URI']; //получаем относительную ссылку
+
 //массив с путями и их контроллерами, методами и параметрами
 $routes = array(
     '#^/users$#' => 'UserController/all',
@@ -14,10 +16,12 @@ $routes = array(
     '#^/forum/guest$#' => 'ForumController/guest',
     '#^/forum/user$#' => 'ForumController/user',
 );
-// $route = searchRoute($routes, $url);
+
 $route = searchRoute($routes, $url);
 $data = parseRoute($route);
+
 call($data['class'], $data['method'], $data['params']);
+
 /**
  * Ищет ссылку в массиве
  *
@@ -40,7 +44,8 @@ function searchRoute($routes, $url)
             throw new Exception('Путь не найден!');
     }
 return $result;                                             // Возвращаю класс ... но ID не вывожу
-};
+}
+
 /**
  * Разбирает путь на части
  *
@@ -57,6 +62,7 @@ function parseRoute($route)
     );
     return $data;
 }
+
 /**
  * Вызывает метод в указанном классе с параметрами
  *
