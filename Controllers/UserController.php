@@ -1,14 +1,20 @@
 <?php
 
+namespace Controllers;
+
+use Models\User;
+
 class UserController
 {
     public function all()
     {
-        echo 'Все пользователи';
+        $users = User::all();
+        return 'Все пользователи. Количество пользователей: '. count($users);
     }
 
     public function getById($id)
     {
-        echo 'Пользователь c ID '. $id;
+        $user = User::getById($id);
+        return 'Пользователь c ID '. $user[0] . ' ' . $user[1];
     }
 }

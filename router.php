@@ -1,27 +1,15 @@
 <?php
 
-$url = $_SERVER['REQUEST_URI']; //получаем относительную ссылку
-$id = 0;
+$url = $_SERVER['REQUEST_URI'];
 
-//массив с путями и их контроллерами, методами и параметрами
-$routes = array(
-    '#^/users$#' => 'UserController/all',
-    '#^/user/([0-9]+)$#' => 'UserController/getById/id',
-    '#^/register$#' => 'RegisterController/index',
-    '#^/register/user$#' => 'RegisterController/user',
-    '#^/register/company$#' => 'RegisterController/company',
-    '#^/auth$#' => 'AuthController/index',
-    '#^/guests$#' => 'GuestController/all',
-    '#^/guest/([0-9]+)$#' => 'GuestController/getById/id',
-    '#^/forum$#' => 'ForumController/index',
-    '#^/forum/guest$#' => 'ForumController/guest',
-    '#^/forum/user$#' => 'ForumController/user',
-);
+$routes = include './routes.php';
+
 
 $route = searchRoute($routes, $url);
-$data = parseRoute($route, $routes, $url, $id);
+$data = parseRoute($route);
 
-call($data['class'], $data['method'], $data['params']);
+
+echo call($data['class'], $data['method'], $data['params']);
 
 /**
  * Ищет ссылку в массиве
@@ -33,19 +21,18 @@ call($data['class'], $data['method'], $data['params']);
  */
 function searchRoute($routes, $url)
 {
-    foreach($routes as $rout=>$value) {
-        if (preg_match($rout, $url, $a)) {
-            $result = $value;                               // Получаю класс
-            if (isset($a[1])) {
-                global $id;
-				$id=$a[1];                                  // Получаю ID
-            }
+    $data = array();
+    foreach ($routes as $key => $value) {
+        $key = str_replace(':num', '([\d]+)', $key);
+        if (preg_match('{^'. $key .'$}', $url, $matches)) {
+            array_shift($matches);
+            $data['route'] = $key;
+            $data['uses'] = $value;
+            $data['params'] = $matches;
+            return $data;
         }
     }
-	if (!isset($result)) {
-            throw new Exception('Путь не найден!');
-    }
-return $result;                                             // Возвращаю класс ... но ID не вывожу
+    throw new Exception('Путь не найден!');
 }
 
 /**
@@ -54,17 +41,15 @@ return $result;                                             // Возвраща�
  * @param $route
  * @return array
  */
-function parseRoute($route, $routes, $url, $id)
+function parseRoute($route)
 {
-    $routeParts = explode('/', $route);
+    $routeParts = explode('/', $route['uses']);
+
     $data = array(
         'class' => array_shift($routeParts),
         'method' => array_shift($routeParts),
-        'params' => $routeParts
+        'params' => $route['params']
     );
-	if ($data['params'][0] = 'id') {
-		$data['params'][0] = $id;
-	}
     return $data;
 }
 
@@ -77,5 +62,5 @@ function parseRoute($route, $routes, $url, $id)
  */
 function call($className, $methodName, $params)
 {
-    call_user_func_array([$className, $methodName], $params);
+    return call_user_func_array(['Controllers\\' . $className, $methodName], $params);
 }

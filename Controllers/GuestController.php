@@ -1,14 +1,16 @@
 <?php
 
+namespace Controllers;
+
 class GuestController
 {
     public function all()
     {
-        echo 'Все гости';
+        return 'Все гости';
     }
 
     public function getById($id)
     {
-        echo 'Гость c ID '. $id;
+        return 'Гость c ID '. $id;
     }
 }

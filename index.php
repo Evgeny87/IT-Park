@@ -1,9 +1,6 @@
 <?php
-
-require './Controllers/RegisterController.php';
-require './Controllers/UserController.php';
-require './Controllers/GuestController.php';
-require './Controllers/ForumController.php';
+echo '<pre>';
+spl_autoload_register();
 
 require './router.php';
 

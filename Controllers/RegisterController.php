@@ -1,18 +1,20 @@
 <?php
 
+namespace Controllers;
+
 class RegisterController
 {
-    public function index()
+    public static function index()
     {
-        echo 'Регистрация';
+        return 'Регистрация';
     }
     public function user()
     {
-        echo 'Регистрация пользователя';
+        return 'Регистрация пользователя';
     }
 
     public function company()
     {
-        echo 'Регистрация компании';
+        return 'Регистрация компании';
     }
 }

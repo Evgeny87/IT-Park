@@ -1,2 +1,8 @@
 RewriteEngine on
-RewriteRule . index.php
+# RewriteRule . index.php
+
+# RewriteBase /php-lessons-master/  # вот эта
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteRule ^(.+)$ index.php?uri=$1 [QSA,L]

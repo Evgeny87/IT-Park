@@ -1,18 +1,20 @@
 <?php
 
+namespace Controllers;
+
 class ForumController
 {
     public function index()
     {
-        echo 'Форум - Вы сюда попали первый раз?';
+        return 'Форум - Вы сюда попали первый раз?';
     }
     public function user()
     {
-        echo 'Форум для пользователей';
+        return 'Форум для пользователей';
     }
 
     public function guest()
     {
-        echo 'Форум для гостей';
+        return 'Форум для гостей';
     }
 }
