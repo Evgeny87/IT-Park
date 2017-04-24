@@ -1,10 +1,8 @@
-
 	<form action="" method="GET">
 		<p>Введите запрос: <input name="search" value="<?php if(isset($_REQUEST['search'])) echo $_REQUEST['search']; ?>"></p>
 		<p>Введите кол-во видео: <input name="limit" value="<?php if(isset($_REQUEST['limit'])) echo $_REQUEST['limit']; ?>"></p>
 		<input type="submit">
 	</form>
-	
 <?php
 // http://www.леха.com/2016/11/youtube-api-v-3-parsing-videorolikov-po-klyuchevym-frazam-na-php/
 function youtube_search($apikey, $search, $limit){
@@ -32,15 +30,17 @@ $res = json_decode( $res_json, true);
 $videos = array();
 //		echo '<pre>';
 //		echo var_dump($res);
-
 	foreach ($res['items'] as $res) {
 		switch ($res['id']['kind']) {
 			case 'youtube#video':
-				$videos[] = array('videoTitle'=>$res['snippet']['title'], 'videoURL'=>'https://www.youtube.com/watch?v='.$res['id']['videoId'], 'videodescription'=>$res['snippet']['description'],
-					'videoData'=>date('d.m.Y H:i:s', strtotime($res['snippet']['publishedAt'])), 'channelURL'=>'https://www.youtube.com/watch?v='.$res['snippet']['channelId'],
+				$videos[] = array('videoTitle'=>$res['snippet']['title'],
+					'videoURL'=>'https://www.youtube.com/watch?v='.$res['id']['videoId'],
+					'videoiframe'=>'https://www.youtube.com/embed/'.$res['id']['videoId'],
+					'videodescription'=>$res['snippet']['description'],
+					'videoData'=>date('d.m.Y H:i:s', strtotime($res['snippet']['publishedAt'])),
+					'channelURL'=>'https://www.youtube.com/watch?v='.$res['snippet']['channelId'],
 					'channelTitle'=>$res['snippet']['channelTitle']);
 ?>
-				
 <p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/<?=$res['id']['videoId']?>" frameborder="0" allowfullscreen></iframe>
 </p>
@@ -58,7 +58,6 @@ $videos = array();
 		</a></p>
 		</br>
 <?php
-
 	}
 }
 //var_dump ($videos);
