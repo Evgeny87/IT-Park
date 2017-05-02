@@ -7,7 +7,7 @@
 // http://www.леха.com/2016/11/youtube-api-v-3-parsing-videorolikov-po-klyuchevym-frazam-na-php/
 function youtube_search($apikey, $search, $limit){
 	$search =  urlencode($search);
-	$url = "https://www.googleapis.com/youtube/v3/search?part=snippet&q=$search&type=video&maxResults=$limit&regionCode=RU&key=$apikey";
+	$url = "https://www.googleapis.com/youtube/v3/search?part=snippet&order=viewCount&q=$search&type=video&maxResults=$limit&regionCode=RU&key=$apikey";
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_USERAGENT,             "Mozilla/5.0 (Windows NT 5.1; rv:7.0.1) Gecko/20100101 Firefox/7.0.1");
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,        FALSE);
