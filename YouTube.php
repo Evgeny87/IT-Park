@@ -20,45 +20,53 @@ function youtube_search($apikey, $search, $limit){
 	curl_close($ch);
 	return $out;
 }
-if (isset($_REQUEST['search'])) {
-$search = strip_tags($_REQUEST['search']); //  Поисковый запрос
-$limit = strip_tags($_REQUEST['limit']); // Количество результатов
-}
+
 $apikey = "AIzaSyB9X4cOVcKfiMrsvcCxziE0xZbuBz7DhdI"; // Ваш ключ к api youtube v3
-$res_json = youtube_search($apikey, $search, $limit) ;
-$res = json_decode( $res_json, true);
-$videos = array();
-//		echo '<pre>';
-//		echo var_dump($res);
-	foreach ($res['items'] as $res) {
-		switch ($res['id']['kind']) {
-			case 'youtube#video':
-				$videos[] = array('videoTitle'=>$res['snippet']['title'],
-					'videoURL'=>'https://www.youtube.com/watch?v='.$res['id']['videoId'],
-					'videoiframe'=>'https://www.youtube.com/embed/'.$res['id']['videoId'],
-					'videodescription'=>$res['snippet']['description'],
-					'videoData'=>date('d.m.Y H:i:s', strtotime($res['snippet']['publishedAt'])),
-					'channelURL'=>'https://www.youtube.com/watch?v='.$res['snippet']['channelId'],
-					'channelTitle'=>$res['snippet']['channelTitle']);
+
+// Проверка, что запрос отправлен (и он не пустой)
+if (isset($_REQUEST['search']) && isset($_REQUEST['limit'])) {
+    $search = strip_tags($_REQUEST['search']); //  Поисковый запрос
+    $limit = strip_tags($_REQUEST['limit']); // Количество результатов
+    $res_json = youtube_search($apikey, $search, $limit);
+    $res = json_decode($res_json, true);
+
+    $video = array();
+
+    // Формируем массив $Video[]
+    foreach ($res['items'] as $res) {
+        switch ($res['id']['kind']) {
+            case 'youtube#video':
+                $video[] = array('videoTitle' => $res['snippet']['title'],
+                    'videoURL' => 'https://www.youtube.com/watch?v=' . $res['id']['videoId'],
+                    'videoiframe' => 'https://www.youtube.com/embed/' . $res['id']['videoId'],
+                    'videodescription' => $res['snippet']['description'],
+                    'videoData' => date('d.m.Y H:i:s', strtotime($res['snippet']['publishedAt'])),
+                    'channelURL' => 'https://www.youtube.com/watch?v=' . $res['snippet']['channelId'],
+                    'channelTitle' => $res['snippet']['channelTitle']);
+        }
+    }
+
+    // Вывод видео
+    foreach ($video as $videoParams) {
 ?>
-<p>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/<?=$res['id']['videoId']?>" frameborder="0" allowfullscreen></iframe>
-</p>
-		<p>Ссылка на видео: 
-		<a href="https://www.youtube.com/watch?v=<?=$res['id']['videoId']?>">
-			<?=$res['snippet']['title']?>
-		</a></p>
-		<p>Описание:
-		<?=$res['snippet']['description']?></p>
-		<p>Дата и время публикации видео:
-		<?= date('d.m.Y H:i:s', strtotime($res['snippet']['publishedAt']));?></p>
-		<p>Ссылка на канал: 
-		<a href="https://www.youtube.com/watch?v=<?=$res['snippet']['channelId']?>">
-			<?=$res['snippet']['channelTitle']?>
-		</a></p>
-		</br>
+    <p>
+    <iframe width="560" height="315" src="<?= $videoParams['videoiframe'] ?>" frameborder="0" allowfullscreen></iframe>
+    </p>
+
+    <p>Ссылка на видео:
+		<a href="<?= $videoParams['videoURL'] ?>">
+			<?= $videoParams['videoTitle'] ?>
+    </a></p>
+    <p>Описание:
+        <?= $videoParams['videodescription'] ?></p>
+    <p>Дата и время публикации видео:
+        <?= $videoParams['videoData']; ?></p>
+    <p>Ссылка на канал:
+        <a href="<?= $videoParams['channelURL'] ?>">
+            <?= $videoParams['channelTitle'] ?>
+        </a></p>
+    </br>
 <?php
-	}
+    }
 }
-//var_dump ($videos);
 ?>
