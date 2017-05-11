@@ -18,10 +18,12 @@ class Core
 		curl_setopt($curl, CURLOPT_USERAGENT,             "Mozilla/5.0 (Windows NT 5.1; rv:7.0.1) Gecko/20100101 Firefox/7.0.1");
 		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER,        FALSE);
 		curl_setopt($curl, CURLOPT_HEADER,                false);
-		curl_setopt($curl, CURLOPT_FOLLOWLOCATION,        true); //если выпадает ошибка на эту строку - попробуйте закомментировать её
+		curl_setopt($curl, CURLOPT_FOLLOWLOCATION,        true); //РµСЃР»Рё РІС‹РїР°РґР°РµС‚ РѕС€РёР±РєР° РЅР° СЌС‚Сѓ СЃС‚СЂРѕРєСѓ - РїРѕРїСЂРѕР±СѓР№С‚Рµ Р·Р°РєРѕРјРјРµРЅС‚РёСЂРѕРІР°С‚СЊ РµС‘
 		curl_setopt($curl, CURLOPT_URL,                   $url);
 		curl_setopt($curl, CURLOPT_REFERER,               $url);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER,        TRUE);
+//	curl_setopt($ch, CURLOPT_RETURNTRANSFER,        TRUE);
+// РёР»Рё
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER,        1);
 		$response = curl_exec($curl);
 		curl_close($curl);
 		return JSON::fromJson($response);
