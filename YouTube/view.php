@@ -1,7 +1,15 @@
 <form action="" method="GET">
 	<p>Введите запрос: <input  type="text" name="search"  placeholder="Введите запрос" value="<?php if(isset($_REQUEST['search'])) echo $_REQUEST['search']; ?>"></p>
 	<p>Введите кол-во видео: <input  type="number" name="limit"  min="1" max="20" step="1" value="<?php if(isset($_REQUEST['limit'])) echo $_REQUEST['limit']; else echo "20" ?>"></p>
-	<input type="submit">
+	<input type="submit" value="Поиск" name="submit">
+	<?php
+	// Проверка, что запрос отправлен (и он не пустой)
+	if (isset($_REQUEST['search']) && isset($_REQUEST['limit']) && !isset($_REQUEST['sortViewCount'])):
+	?>
+	<input type="submit" value="Сортировка по просмотрам" name="sortViewCount">
+	<?php
+	endif;
+	?>
 </form>
 
 <?php

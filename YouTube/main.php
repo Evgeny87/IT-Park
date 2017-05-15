@@ -28,9 +28,10 @@ function main ()
 				}
 //				}
 			}
-			
-			// сортировка массива по количеству просмотров (от большего к меньшему)
-			arsort ($video);
+			if (isset($_REQUEST['sortViewCount'])) {
+				// сортировка массива по количеству просмотров (от большего к меньшему)
+				$video=sortViewCount($video);
+			}
 		}
 		return $video;
 	}

@@ -77,4 +77,11 @@ function fromJson($json, $asArray = false)
     {
         return json_decode($json, $asArray);
     }
+	
+//Сортировка массива по количеству просмотров (от большего к меньшему)
+function sortViewCount($video)
+{
+	arsort ($video);
+	return $video;
+}
 ?>
