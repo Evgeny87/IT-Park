@@ -1,24 +1,17 @@
-<form action="" method="GET">
-	<p>Введите запрос: <input  type="text" name="search"  placeholder="Введите запрос" value="<?php if(isset($_REQUEST['search'])) echo $_REQUEST['search']; ?>"></p>
-	<p>Введите кол-во видео: <input  type="number" name="limit"  min="1" max="20" step="1" value="<?php if(isset($_REQUEST['limit'])) echo $_REQUEST['limit']; else echo "20" ?>"></p>
-	<input type="submit" value="Поиск" name="submit">
-	<?php
-	// Проверка, что запрос отправлен (и он не пустой)
-	if (isset($_REQUEST['search']) && isset($_REQUEST['limit']) && !isset($_REQUEST['sortViewCount'])):
-	?>
-	<input type="submit" value="Сортировка по просмотрам" name="sortViewCount">
-	<?php
-	endif;
-	?>
-</form>
-
+<!-- блок аккордеон -->
+<div class="accordion">
 <?php
 // Проверка, что запрос отправлен (и он не пустой)
 if (isset($_REQUEST['search']) && isset($_REQUEST['limit'])):	
     // Вывод видео
+$i = 1;
     foreach ($video as $videoParams):
 ?>
-    <p>
+
+    <section class="accordion_item">
+        <h3 class="title_block"><?=$i.". ".$videoParams['videoTitle']?></h3>
+        <div class="info">
+            <p>
 		<iframe width="560" height="315" src="<?= $videoParams['videoiframe'] ?>" frameborder="0" allowfullscreen></iframe>
     </p>
 
@@ -41,8 +34,12 @@ if (isset($_REQUEST['search']) && isset($_REQUEST['limit'])):
     <p>Кол-во просмотров:
         <?= $videoParams['viewCount']; ?>
 	</p>
-    </br>
+        </div>
+    </section>
 <?php
+	$i++;
 	endforeach;
 endif;
 ?>
+</div>
+<!-- конец блока аккордеон -->

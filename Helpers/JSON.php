@@ -1,15 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: User
- * Date: 20.04.2017
- * Time: 18:45
- */
+
 namespace Helpers;
+
 class JSON
 {
     /**
-     * Êîíâåðòèðóåò äàííûå â JSON ñòðîêó
+     * ÐšÐ¾Ð½Ð²ÐµÑ€Ñ‚Ð¸Ñ€ÑƒÐµÑ‚ Ð´Ð°Ð½Ð½Ñ‹Ðµ Ð² JSON ÑÑ‚Ñ€Ð¾ÐºÑƒ
      *
      * @param $data
      * @return string
@@ -18,8 +14,9 @@ class JSON
     {
         return json_encode($data);
     }
+
     /**
-     * Êîíâåðòèðóåò JSON ñòðîêó â îáúåêò èëè ìàññèâ
+     * ÐšÐ¾Ð½Ð²ÐµÑ€Ñ‚Ð¸Ñ€ÑƒÐµÑ‚ JSON ÑÑ‚Ñ€Ð¾ÐºÑƒ Ð² Ð¾Ð±ÑŠÐµÐºÑ‚ Ð¸Ð»Ð¸ Ð¼Ð°ÑÑÐ¸Ð²
      *
      * @param $json
      * @return object|array

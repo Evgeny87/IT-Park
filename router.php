@@ -1,15 +1,36 @@
 <?php
+// require_once "Controllers/YouTubeController.php";
 
+ function loadFromClasses($aClassName) {
+    $aClassFilePath = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'Controllers' . DIRECTORY_SEPARATOR . $aClassName . '.php';
+    if (file_exists($aClassFilePath)) {
+        require_once $aClassFilePath;
+        return true;
+    }
+    return false;
+}
+
+
+//регистрируем обе функции автозагрузки
+spl_autoload_register('loadFromClasses');
 $url = $_SERVER['REQUEST_URI'];
 
+$parts = explode("?",$url);
+$url = $parts[0];
 $routes = include './routes.php';
 
 
 $route = searchRoute($routes, $url);
 $data = parseRoute($route);
 
+if($data["class"] == "") {
+    $data['class'] = "YouTubeController";
+    $data['method'] = "error404";
+    $data['params'] = array();
+}
 
-echo call($data['class'], $data['method'], $data['params']);
+
+return call($data['class'], $data['method'], $data['params']);
 
 /**
  * Ищет ссылку в массиве
@@ -32,7 +53,6 @@ function searchRoute($routes, $url)
             return $data;
         }
     }
-    throw new Exception('Путь не найден!');
 }
 
 /**
@@ -59,8 +79,12 @@ function parseRoute($route)
  * @param $className
  * @param $methodName
  * @param $params
+ * @return mixed
  */
+
 function call($className, $methodName, $params)
 {
+#    $controller = new $className();
+#    return $controller->$methodName();
     return call_user_func_array(['Controllers\\' . $className, $methodName], $params);
 }
